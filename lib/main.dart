@@ -6,10 +6,10 @@ import 'package:Time/pages/chooseLocation.dart';
 
 void main() {
   runApp(MaterialApp(
-    initialRoute: '/',
+    // initialRoute: '/home',
     routes: {
       '/': (context) => Loading(),
-      '/home': (context) => Home(),
+      '/home': (context) => HomePage(),
       '/location': (context) => ChooseLocation(),
     },
   ));

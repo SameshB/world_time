@@ -1,7 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
+
+import 'package:Time/services/timeZone.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class Loading extends StatefulWidget {
   @override
@@ -10,33 +10,39 @@ class Loading extends StatefulWidget {
 
 class _LoadingState extends State<Loading> {
   String todo;
+  String time;
 
-  void getData() async {
-    try {
-      Response response =
-          await get('https://jsonplaceholder.typicode.com/taodos/1');
-      Map data = jsonDecode(response.body);
-      print(data);
-      print(data['title']);
-      String result = data['title'] + ' hello';
-      todo = result;
-      print(todo);
-    } catch (e) {
-      print('caught error: $e');
-    }
+  void getTime() async {
+    TimeZone ktm = TimeZone(location: 'Kathmandu, Nepal', offset: '+05:45');
+    await ktm.getTime();
+
+    Navigator.pushNamed(
+      context,
+      '/home',
+      arguments: {
+        'location': 'Kathmandu, Nepal',
+        'time': ktm.time,
+        'isDay': ktm.isDay,
+        'flag': 'nepal.png'
+      },
+    );
   }
 
   @override
   void initState() {
     super.initState();
-    getData();
+    getTime();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Text('Loading'),
+      backgroundColor: Color(0xff1488C8),
+      body: Center(
+        child: SpinKitRotatingCircle(
+          color: Colors.white,
+          size: 50.0,
+        ),
       ),
     );
   }
